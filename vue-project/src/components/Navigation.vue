@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { router } from '../composables/useRouter'
 
 defineProps({
   isDark: {
@@ -14,22 +15,19 @@ const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 
 const navItems = [
-  { name: '首页', href: '#hero' },
-  { name: '关于', href: '#about' },
-  { name: '技能', href: '#skills' },
-  { name: '项目', href: '#projects' },
-  { name: '联系', href: '#contact' }
+  { name: '首页', href: '/' },
+  { name: '关于', href: '/about' },
+  { name: '作品集', href: '/portfolio' },
+  { name: '博客', href: '/blog' },
+  { name: '联系', href: '/contact' }
 ]
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 }
 
-const scrollToSection = (href) => {
-  const element = document.querySelector(href)
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' })
-  }
+const navigateToPage = (href) => {
+  router.push(href)
   isMenuOpen.value = false
 }
 
@@ -51,7 +49,7 @@ onMounted(() => {
         <ul class="nav-list">
           <li v-for="item in navItems" :key="item.name" class="nav-item">
             <a 
-              @click="scrollToSection(item.href)" 
+              @click="navigateToPage(item.href)" 
               class="nav-link"
               :href="item.href"
             >

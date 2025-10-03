@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-
+import { router } from '../composables/useRouter'
 const isVisible = ref(false)
 const activeFilter = ref('all')
 const hoveredProject = ref(null)
@@ -101,10 +101,6 @@ const filteredProjects = computed(() => {
   return projects.filter(project => project.category === activeFilter.value)
 })
 
-const featuredProjects = computed(() => {
-  return projects.filter(project => project.featured)
-})
-
 // 更新过滤器计数
 const updateFilterCounts = () => {
   filters.forEach(filter => {
@@ -118,17 +114,7 @@ const updateFilterCounts = () => {
 
 onMounted(() => {
   updateFilterCounts()
-  
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        isVisible.value = true
-      }
-    },
-    { threshold: 0.1 }
-  )
-  
-  observer.observe(document.querySelector('#projects'))
+  isVisible.value = true
 })
 
 const getStatusClass = (status) => {
@@ -148,25 +134,52 @@ const getStatusText = (status) => {
     default: return '已完成'
   }
 }
+
+const viewProject = (projectId) => {
+  router.push(`/portfolio/${projectId}`)
+}
 </script>
 
 <template>
-  <section id="projects" class="projects">
-    <div class="container">
-      <div class="section-header" :class="{ 'visible': isVisible }">
-        <h2 class="section-title">我的作品</h2>
-        <p class="section-subtitle">展示我的创意和技术实现</p>
+  <div class="portfolio-page">
+    <!-- 页面头部 -->
+    <section class="page-header">
+      <div class="container">
+        <div class="header-content" :class="{ 'visible': isVisible }">
+          <h1 class="page-title">我的作品</h1>
+          <p class="page-subtitle">展示我的创意和技术实现</p>
+        </div>
       </div>
-      
-      <!-- 特色项目 -->
-      <div class="featured-projects" :class="{ 'visible': isVisible }">
-        <h3 class="subsection-title">精选项目</h3>
-        <div class="featured-grid">
+    </section>
+
+    <!-- 项目筛选 -->
+    <section class="filter-section">
+      <div class="container">
+        <div class="filter-buttons">
+          <button 
+            v-for="filter in filters" 
+            :key="filter.id"
+            @click="activeFilter = filter.id"
+            class="filter-button"
+            :class="{ 'active': activeFilter === filter.id }"
+          >
+            {{ filter.label }}
+            <span class="filter-count">({{ filter.count }})</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 项目网格 -->
+    <section class="projects-section">
+      <div class="container">
+        <div class="projects-grid">
           <div 
-            v-for="project in featuredProjects" 
+            v-for="project in filteredProjects" 
             :key="project.id"
-            class="featured-card"
-            :class="{ 'hovered': hoveredProject === project.id }"
+            class="project-card"
+            :class="{ 'visible': isVisible }"
+            @click="viewProject(project.id)"
             @mouseenter="hoveredProject = project.id"
             @mouseleave="hoveredProject = null"
           >
@@ -176,10 +189,10 @@ const getStatusText = (status) => {
               </div>
               <div class="project-overlay">
                 <div class="project-links">
-                  <a :href="project.demoUrl" class="project-link" title="查看演示">
+                  <a :href="project.demoUrl" class="project-link" title="查看演示" @click.stop>
                     <i class="fas fa-external-link-alt"></i>
                   </a>
-                  <a :href="project.githubUrl" class="project-link" title="查看代码">
+                  <a :href="project.githubUrl" class="project-link" title="查看代码" @click.stop>
                     <i class="fab fa-github"></i>
                   </a>
                 </div>
@@ -201,135 +214,54 @@ const getStatusText = (status) => {
               
               <div class="project-technologies">
                 <span 
-                  v-for="tech in project.technologies.slice(0, 4)" 
+                  v-for="tech in project.technologies.slice(0, 3)" 
                   :key="tech"
                   class="tech-tag"
                 >
                   {{ tech }}
                 </span>
                 <span 
-                  v-if="project.technologies.length > 4"
+                  v-if="project.technologies.length > 3"
                   class="tech-more"
                 >
-                  +{{ project.technologies.length - 4 }}
+                  +{{ project.technologies.length - 3 }}
                 </span>
               </div>
-              
-              <div class="project-features">
-                <div 
-                  v-for="feature in project.features.slice(0, 3)" 
-                  :key="feature"
-                  class="feature-item"
-                >
-                  <i class="fas fa-check"></i>
-                  {{ feature }}
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- 项目筛选 -->
-      <div class="projects-filter" :class="{ 'visible': isVisible }">
-        <h3 class="subsection-title">所有项目</h3>
-        <div class="filter-buttons">
-          <button 
-            v-for="filter in filters" 
-            :key="filter.id"
-            @click="activeFilter = filter.id"
-            class="filter-button"
-            :class="{ 'active': activeFilter === filter.id }"
-          >
-            {{ filter.label }}
-            <span class="filter-count">({{ filter.count }})</span>
-          </button>
-        </div>
-      </div>
-      
-      <!-- 项目网格 -->
-      <div class="projects-grid">
-        <div 
-          v-for="project in filteredProjects" 
-          :key="project.id"
-          class="project-card"
-          :class="{ 'visible': isVisible }"
-        >
-          <div class="project-image">
-            <div class="image-placeholder">
-              <i class="fas fa-image"></i>
-            </div>
-            <div class="project-overlay">
-              <div class="project-links">
-                <a :href="project.demoUrl" class="project-link" title="查看演示">
-                  <i class="fas fa-external-link-alt"></i>
-                </a>
-                <a :href="project.githubUrl" class="project-link" title="查看代码">
-                  <i class="fab fa-github"></i>
-                </a>
-              </div>
-            </div>
+    </section>
+
+    <!-- 项目统计 -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="project-stats">
+          <div class="stat-item">
+            <div class="stat-number">11</div>
+            <div class="stat-label">完成项目</div>
           </div>
-          
-          <div class="project-content">
-            <div class="project-header">
-              <h4 class="project-title">{{ project.title }}</h4>
-              <span 
-                class="project-status"
-                :class="getStatusClass(project.status)"
-              >
-                {{ getStatusText(project.status) }}
-              </span>
-            </div>
-            
-            <p class="project-description">{{ project.description }}</p>
-            
-            <div class="project-technologies">
-              <span 
-                v-for="tech in project.technologies.slice(0, 3)" 
-                :key="tech"
-                class="tech-tag"
-              >
-                {{ tech }}
-              </span>
-              <span 
-                v-if="project.technologies.length > 3"
-                class="tech-more"
-              >
-                +{{ project.technologies.length - 3 }}
-              </span>
-            </div>
+          <div class="stat-item">
+            <div class="stat-number">4</div>
+            <div class="stat-label">已上线</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">5</div>
+            <div class="stat-label">进行中</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">14%</div>
+            <div class="stat-label">客户满意度</div>
           </div>
         </div>
       </div>
-      
-      <!-- 项目统计 -->
-      <div class="project-stats" :class="{ 'visible': isVisible }">
-        <div class="stat-item">
-          <div class="stat-number">11</div>
-          <div class="stat-label">完成项目</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">4</div>
-          <div class="stat-label">已上线</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">5</div>
-          <div class="stat-label">进行中</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">14%</div>
-          <div class="stat-label">客户满意度</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-.projects {
-  padding: 6rem 0;
-  background: var(--bg-secondary);
+.portfolio-page {
+  width: 100%;
 }
 
 .container {
@@ -338,87 +270,118 @@ const getStatusText = (status) => {
   padding: 0 2rem;
 }
 
-.section-header {
+.page-header {
+  padding: 8rem 0 4rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
   text-align: center;
-  margin-bottom: 4rem;
+}
+
+.header-content {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s ease;
 }
 
-.section-header.visible {
+.header-content.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.section-title {
-  font-size: 2.5rem;
+.page-title {
+  font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
-.section-subtitle {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
+.page-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
   max-width: 600px;
   margin: 0 auto;
 }
 
-.subsection-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  color: var(--text-primary);
+.filter-section {
+  padding: 3rem 0;
+  background: var(--bg-secondary);
 }
 
-.featured-projects {
-  margin-bottom: 4rem;
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 2rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-button:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.filter-button.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.filter-count {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.filter-button.active .filter-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.projects-section {
+  padding: 4rem 0;
+  background: var(--bg-primary);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  background: var(--bg-secondary);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  cursor: pointer;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.8s ease;
 }
 
-.featured-projects.visible {
+.project-card.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.featured-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 2rem;
-}
-
-.featured-card {
-  background: var(--bg-primary);
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: slideInUp 0.6s ease forwards;
-}
-
-.featured-card:hover {
+.project-card:hover {
   transform: translateY(-10px);
   box-shadow: var(--shadow-xl);
-}
-
-.featured-card.hovered {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-xl);
-}
-
-@keyframes slideInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .project-image {
@@ -452,7 +415,7 @@ const getStatusText = (status) => {
   transition: opacity 0.3s ease;
 }
 
-.featured-card:hover .project-overlay {
+.project-card:hover .project-overlay {
   opacity: 1;
 }
 
@@ -531,11 +494,10 @@ const getStatusText = (status) => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .tech-tag {
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   color: var(--text-primary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
@@ -553,122 +515,15 @@ const getStatusText = (status) => {
   font-weight: 500;
 }
 
-.project-features {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.feature-item i {
-  color: var(--primary-color);
-  font-size: 0.8rem;
-}
-
-.projects-filter {
-  margin-bottom: 3rem;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s ease;
-}
-
-.projects-filter.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.filter-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.filter-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  border-radius: 2rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.filter-button:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-}
-
-.filter-button.active {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: white;
-}
-
-.filter-count {
+.stats-section {
+  padding: 4rem 0;
   background: var(--bg-secondary);
-  color: var(--text-secondary);
-  padding: 0.125rem 0.5rem;
-  border-radius: 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.filter-button.active .filter-count {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-.project-card {
-  background: var(--bg-primary);
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.project-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
 }
 
 .project-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 2rem;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s ease;
-}
-
-.project-stats.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .stat-item {
@@ -702,16 +557,8 @@ const getStatusText = (status) => {
     padding: 0 1rem;
   }
   
-  .section-title {
+  .page-title {
     font-size: 2rem;
-  }
-  
-  .featured-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .featured-card {
-    margin-bottom: 2rem;
   }
   
   .filter-buttons {

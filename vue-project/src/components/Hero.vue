@@ -42,7 +42,7 @@ const scrollToProjects = () => {
         <div class="hero-text">
           <h1 class="hero-title">
             <span class="greeting">你好，我是</span>
-            <span class="name">张创新</span>
+            <span class="name">野兽先辈</span>
           </h1>
           
           <div class="typed-text">

@@ -1,54 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import Navigation from './components/Navigation.vue'
-import Hero from './components/Hero.vue'
-import About from './components/About.vue'
-import Skills from './components/Skills.vue'
-import Projects from './components/Projects.vue'
-import Contact from './components/Contact.vue'
-
-const isDarkMode = ref(false)
-const scrollY = ref(0)
-
-const toggleTheme = () => {
-  isDarkMode.value = !isDarkMode.value
-  document.documentElement.classList.toggle('dark', isDarkMode.value)
-}
-
-const handleScroll = () => {
-  scrollY.value = window.scrollY
-}
-
-onMounted(() => {
-  // 检测系统主题偏好
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    isDarkMode.value = true
-    document.documentElement.classList.add('dark')
-  }
-  
-  // 添加滚动监听
-  window.addEventListener('scroll', handleScroll)
-})
+import MainLayout from './layouts/MainLayout.vue'
 </script>
 
 <template>
-  <div class="app" :class="{ 'dark': isDarkMode }">
-    <Navigation :is-dark="isDarkMode" @toggle-theme="toggleTheme" />
-    <Hero />
-    <About />
-    <Skills />
-    <Projects />
-    <Contact />
-    
-    <!-- 返回顶部按钮 -->
-    <button 
-      @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-      class="back-to-top"
-      :class="{ 'visible': scrollY > 300 }"
-    >
-      <i class="fas fa-arrow-up"></i>
-    </button>
-  </div>
+  <MainLayout />
 </template>
 
 <style>

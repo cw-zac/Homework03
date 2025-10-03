@@ -105,6 +105,87 @@ npm run build
 npm run preview
 ```
 
+## 🗂️ 嵌套路由系统
+
+这个项目实现了一个完整的嵌套路由系统，支持多页面应用：
+
+### 路由结构
+```
+/                    # 首页 - 完整的作品集展示
+/about              # 关于我页面
+/portfolio          # 作品集列表页面
+/portfolio/:id      # 项目详情页面
+/blog               # 博客列表页面
+/blog/:slug         # 博客文章详情页面
+/contact            # 联系我页面
+```
+
+### 页面功能
+
+#### 1. 首页 (/)
+- 包含所有主要内容的单页应用
+- 英雄区域、关于我、技能、项目、联系等模块
+- 适合作为作品集的主入口
+
+#### 2. 关于我页面 (/about)
+- 详细的个人介绍和工作经历
+- 技能展示和教育背景
+- 时间线形式的工作经历展示
+
+#### 3. 作品集页面 (/portfolio)
+- 项目列表和筛选功能
+- 按技术栈和类型分类
+- 项目统计和展示
+
+#### 4. 项目详情页面 (/portfolio/:id)
+- 单个项目的详细信息
+- 技术栈、功能特性、项目截图
+- 挑战与解决方案
+- 相关项目推荐
+
+#### 5. 博客页面 (/blog)
+- 技术文章列表
+- 分类筛选和搜索功能
+- 精选文章展示
+
+#### 6. 博客文章页面 (/blog/:slug)
+- 完整的文章内容展示
+- 目录导航和分享功能
+- 相关文章推荐
+
+#### 7. 联系页面 (/contact)
+- 联系信息和表单
+- 社交媒体链接
+- 专业的联系界面
+
+### 自定义路由
+
+项目使用自定义的路由系统，位于 `src/composables/useRouter.js`：
+
+```javascript
+// 添加新路由
+const routeComponents = {
+  '/': Home,
+  '/about': About,
+  '/portfolio': Portfolio,
+  '/contact': Contact,
+  '/blog': Blog,
+  '/new-page': NewPage  // 添加新页面
+}
+```
+
+### 路由导航
+
+```javascript
+import { router } from '../composables/useRouter'
+
+// 导航到新页面
+router.push('/about')
+
+// 返回上一页
+router.go(-1)
+```
+
 ## 🎨 设计系统
 
 ### 颜色系统

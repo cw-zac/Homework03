@@ -15,26 +15,26 @@ const contactInfo = [
   {
     icon: 'fas fa-envelope',
     title: '邮箱',
-    value: 'contact@example.com',
-    link: 'mailto:contact@example.com'
+    value: '114514@qq.com',
+    link: 'mailto:114514@qq.com'
   },
   {
     icon: 'fas fa-phone',
     title: '电话',
-    value: '+86 138 0000 0000',
-    link: 'tel:+8613800000000'
+    value: '+86 114514',
+    link: 'tel:+86114514'
   },
   {
     icon: 'fas fa-map-marker-alt',
     title: '位置',
-    value: '北京市朝阳区',
+    value: 'xx省xx市',
     link: '#'
   },
   {
     icon: 'fab fa-linkedin',
     title: 'LinkedIn',
-    value: 'linkedin.com/in/username',
-    link: 'https://linkedin.com/in/username'
+    value: 'linkedin.com/in/114514',
+    link: 'https://linkedin.com/in/114514'
   }
 ]
 
@@ -42,25 +42,25 @@ const socialLinks = [
   {
     name: 'GitHub',
     icon: 'fab fa-github',
-    url: 'https://github.com/username',
+    url: 'https://github.com/114514',
     color: '#333'
   },
   {
     name: 'Twitter',
     icon: 'fab fa-twitter',
-    url: 'https://twitter.com/username',
+    url: 'https://twitter.com/114514',
     color: '#1DA1F2'
   },
   {
     name: 'Instagram',
     icon: 'fab fa-instagram',
-    url: 'https://instagram.com/username',
+    url: 'https://instagram.com/114514',
     color: '#E4405F'
   },
   {
     name: 'Dribbble',
     icon: 'fab fa-dribbble',
-    url: 'https://dribbble.com/username',
+    url: 'https://dribbble.com/114514',
     color: '#EA4C89'
   }
 ]

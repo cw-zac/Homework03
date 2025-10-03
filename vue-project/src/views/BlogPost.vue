@@ -1,0 +1,764 @@
+<script setup>
+import { ref, onMounted, computed } from 'vue'
+import { router } from '../composables/useRouter'
+
+const props = defineProps({
+  slug: {
+    type: String,
+    default: 'vue3-composition-api-best-practices'
+  }
+})
+
+const postId = computed(() => props.slug)
+
+const blogPosts = [
+  {
+    id: 1,
+    slug: 'vue3-composition-api-best-practices',
+    title: 'Vue 3 Composition API 最佳实践',
+    excerpt: '深入探讨Vue 3 Composition API的使用技巧和最佳实践，帮助开发者更好地利用这一强大的特性。',
+    content: `
+# Vue 3 Composition API 最佳实践
+
+Vue 3 引入了 Composition API，这是一个全新的编写组件的方式，它提供了更好的逻辑复用和类型推导能力。在这篇文章中，我将分享一些使用 Composition API 的最佳实践。
+
+## 什么是 Composition API？
+
+Composition API 是 Vue 3 中引入的一组 API，允许我们使用函数式的方式来组织组件逻辑。与传统的 Options API 相比，Composition API 提供了：
+
+- 更好的逻辑复用
+- 更强的类型推导
+- 更灵活的代码组织方式
+
+## 核心概念
+
+### setup() 函数
+
+\`setup()\` 是 Composition API 的入口点，它在组件实例创建之前执行。
+
+\`\`\`javascript
+import { ref, reactive } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0)
+    const state = reactive({
+      name: 'Vue 3',
+      version: '3.0'
+    })
+
+    return {
+      count,
+      state
+    }
+  }
+}
+\`\`\`
+
+### 响应式引用
+
+Vue 3 提供了两种创建响应式数据的方式：
+
+1. **ref()** - 用于基本类型
+2. **reactive()** - 用于对象
+
+## 最佳实践
+
+### 1. 合理使用 ref 和 reactive
+
+\`\`\`javascript
+// 推荐：基本类型使用 ref
+const count = ref(0)
+const message = ref('Hello')
+
+// 推荐：对象使用 reactive
+const user = reactive({
+  name: 'John',
+  age: 25
+})
+\`\`\`
+
+### 2. 使用 computed 进行派生状态
+
+\`\`\`javascript
+import { ref, computed } from 'vue'
+
+export default {
+  setup() {
+    const firstName = ref('John')
+    const lastName = ref('Doe')
+    
+    const fullName = computed(() => {
+      return \`\${firstName.value} \${lastName.value}\`
+    })
+    
+    return {
+      firstName,
+      lastName,
+      fullName
+    }
+  }
+}
+\`\`\`
+
+### 3. 使用 watchEffect 进行副作用
+
+\`\`\`javascript
+import { ref, watchEffect } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0)
+    
+    watchEffect(() => {
+      console.log(\`Count is: \${count.value}\`)
+    })
+    
+    return { count }
+  }
+}
+\`\`\`
+
+## 实际应用示例
+
+让我们看一个完整的组件示例：
+
+\`\`\`vue
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;h1&gt;{{ title }}&lt;/h1&gt;
+    &lt;p&gt;Count: {{ count }}&lt;/p&gt;
+    &lt;button @click="increment"&gt;Increment&lt;/button&gt;
+    &lt;button @click="decrement"&gt;Decrement&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import { ref, computed } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0)
+    
+    const title = computed(() => {
+      return \`Counter: \${count.value}\`
+    })
+    
+    const increment = () => {
+      count.value++
+    }
+    
+    const decrement = () => {
+      count.value--
+    }
+    
+    return {
+      count,
+      title,
+      increment,
+      decrement
+    }
+  }
+}
+&lt;/script&gt;
+\`\`\`
+
+## 总结
+
+Composition API 为 Vue 3 带来了更强大的功能和更好的开发体验。通过合理使用这些 API，我们可以编写出更加清晰、可维护的代码。
+
+记住这些最佳实践：
+- 合理选择 ref 和 reactive
+- 使用 computed 处理派生状态
+- 使用 watchEffect 处理副作用
+- 保持代码的简洁和可读性
+
+希望这篇文章对你有帮助！如果你有任何问题，欢迎在评论区讨论。
+    `,
+    category: 'frontend',
+    author: 'Zac',
+    publishDate: '2024-01-15',
+    readTime: '8分钟',
+    tags: ['Vue.js', 'JavaScript', '前端开发'],
+    featured: true,
+    image: '/api/placeholder/800/400'
+  },
+  {
+    id: 2,
+    slug: 'modern-web-design-trends',
+    title: '现代Web设计趋势分析',
+    excerpt: '分析2024年最新的Web设计趋势，包括色彩、布局、交互等方面的创新。',
+    content: `
+# 现代Web设计趋势分析
+
+2024年的Web设计趋势体现了技术与美学的完美结合，为用户带来更加沉浸式的体验。在这篇文章中，我将深入分析当前最热门的设计趋势。
+
+## 主要设计趋势
+
+### 1. 暗色模式设计
+
+暗色模式已经成为现代Web应用的标准配置，它不仅能够减少眼部疲劳，还能突出内容的重要性。
+
+### 2. 微交互设计
+
+微交互通过细微的动画和反馈，提升用户体验，让界面更加生动有趣。
+
+### 3. 渐变色彩应用
+
+现代设计越来越多地使用渐变色彩，创造出富有层次感的视觉效果。
+
+## 技术实现
+
+这些设计趋势的实现需要前端开发者掌握相关的CSS和JavaScript技术。
+
+## 总结
+
+了解和掌握这些设计趋势，能够帮助我们创造出更加现代化和用户友好的Web应用。
+    `,
+    category: 'design',
+    author: 'Zac',
+    publishDate: '2024-01-10',
+    readTime: '6分钟',
+    tags: ['UI设计', 'UX设计', '设计趋势'],
+    featured: true,
+    image: '/api/placeholder/800/400'
+  }
+  // 可以添加更多文章...
+]
+
+const currentPost = computed(() => {
+  return blogPosts.find(post => post.slug === postId.value) || blogPosts[0]
+})
+
+const relatedPosts = computed(() => {
+  return blogPosts
+    .filter(post => post.id !== currentPost.value.id && post.category === currentPost.value.category)
+    .slice(0, 3)
+})
+
+const isVisible = ref(false)
+
+onMounted(() => {
+  isVisible.value = true
+})
+
+const goBack = () => {
+  router.go(-1)
+}
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+</script>
+
+<template>
+  <div class="blog-post-page">
+    <!-- 返回按钮 -->
+    <div class="back-button">
+      <button @click="goBack" class="btn-back">
+        <i class="fas fa-arrow-left"></i>
+        <span>返回博客</span>
+      </button>
+    </div>
+
+    <!-- 文章头部 -->
+    <article class="post-header">
+      <div class="container">
+        <div class="header-content" :class="{ 'visible': isVisible }">
+          <div class="post-meta">
+            <span class="post-category">{{ currentPost.category }}</span>
+            <span class="post-date">{{ formatDate(currentPost.publishDate) }}</span>
+            <span class="post-read-time">{{ currentPost.readTime }}阅读</span>
+          </div>
+          
+          <h1 class="post-title">{{ currentPost.title }}</h1>
+          
+          <div class="post-excerpt">
+            {{ currentPost.excerpt }}
+          </div>
+          
+          <div class="post-tags">
+            <span 
+              v-for="tag in currentPost.tags" 
+              :key="tag"
+              class="tag"
+            >
+              {{ tag }}
+            </span>
+          </div>
+          
+          <div class="post-author">
+            <div class="author-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="author-info">
+              <span class="author-name">{{ currentPost.author }}</span>
+              <span class="author-role">前端开发工程师</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 文章内容 -->
+    <section class="post-content">
+      <div class="container">
+        <div class="content-wrapper">
+          <div class="article-content">
+            <div class="content-body" v-html="currentPost.content.replace(/\n/g, '<br>')"></div>
+          </div>
+          
+          <!-- 侧边栏 -->
+          <aside class="sidebar">
+            <div class="sidebar-section">
+              <h3>目录</h3>
+              <ul class="table-of-contents">
+                <li><a href="#introduction">介绍</a></li>
+                <li><a href="#concepts">核心概念</a></li>
+                <li><a href="#best-practices">最佳实践</a></li>
+                <li><a href="#examples">实际应用</a></li>
+                <li><a href="#conclusion">总结</a></li>
+              </ul>
+            </div>
+            
+            <div class="sidebar-section">
+              <h3>分享文章</h3>
+              <div class="share-buttons">
+                <button class="share-btn">
+                  <i class="fab fa-twitter"></i>
+                  Twitter
+                </button>
+                <button class="share-btn">
+                  <i class="fab fa-linkedin"></i>
+                  LinkedIn
+                </button>
+                <button class="share-btn">
+                  <i class="fab fa-facebook"></i>
+                  Facebook
+                </button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 相关文章 -->
+    <section class="related-posts" v-if="relatedPosts.length > 0">
+      <div class="container">
+        <h2>相关文章</h2>
+        <div class="related-grid">
+          <article 
+            v-for="post in relatedPosts" 
+            :key="post.id"
+            class="related-card"
+            @click="router.push('/blog/' + post.slug)"
+          >
+            <div class="related-image">
+              <div class="image-placeholder">
+                <i class="fas fa-image"></i>
+              </div>
+            </div>
+            <div class="related-content">
+              <h4>{{ post.title }}</h4>
+              <p>{{ post.excerpt }}</p>
+              <div class="related-meta">
+                <span class="related-date">{{ formatDate(post.publishDate) }}</span>
+                <span class="related-read-time">{{ post.readTime }}</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<style scoped>
+.blog-post-page {
+  width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.back-button {
+  position: sticky;
+  top: 5rem;
+  z-index: 100;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 2rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: var(--bg-secondary);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.post-header {
+  padding: 4rem 0 6rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+.header-content {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.header-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.post-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.post-category {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.post-date,
+.post-read-time {
+  opacity: 0.8;
+}
+
+.post-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.post-excerpt {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.author-avatar {
+  width: 3rem;
+  height: 3rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.author-role {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.post-content {
+  padding: 6rem 0;
+  background: var(--bg-primary);
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 4rem;
+}
+
+.article-content {
+  background: var(--bg-secondary);
+  padding: 3rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.content-body {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.content-body :deep(h1),
+.content-body :deep(h2),
+.content-body :deep(h3) {
+  color: var(--text-primary);
+  margin: 2rem 0 1rem 0;
+  font-weight: 600;
+}
+
+.content-body :deep(h1) {
+  font-size: 2rem;
+}
+
+.content-body :deep(h2) {
+  font-size: 1.5rem;
+}
+
+.content-body :deep(h3) {
+  font-size: 1.3rem;
+}
+
+.content-body :deep(p) {
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.content-body :deep(code) {
+  background: var(--bg-tertiary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  color: var(--primary-color);
+}
+
+.content-body :deep(pre) {
+  background: var(--bg-tertiary);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.content-body :deep(pre code) {
+  background: none;
+  padding: 0;
+  color: var(--text-primary);
+}
+
+.sidebar {
+  position: sticky;
+  top: 8rem;
+  height: fit-content;
+}
+
+.sidebar-section {
+  background: var(--bg-secondary);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+}
+
+.sidebar-section h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.table-of-contents {
+  list-style: none;
+  padding: 0;
+}
+
+.table-of-contents li {
+  margin-bottom: 0.5rem;
+}
+
+.table-of-contents a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.table-of-contents a:hover {
+  color: var(--primary-color);
+}
+
+.share-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.share-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.related-posts {
+  padding: 6rem 0;
+  background: var(--bg-secondary);
+}
+
+.related-posts h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 3rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.related-card {
+  background: var(--bg-primary);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.related-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.related-image {
+  height: 150px;
+  overflow: hidden;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--border-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--text-secondary);
+}
+
+.related-content {
+  padding: 1.5rem;
+}
+
+.related-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.related-content p {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.related-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .back-button {
+    padding: 1rem;
+  }
+  
+  .post-title {
+    font-size: 2rem;
+  }
+  
+  .content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .article-content {
+    padding: 2rem;
+  }
+  
+  .sidebar {
+    position: static;
+  }
+  
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
