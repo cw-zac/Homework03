@@ -1,0 +1,140 @@
+/* 现代化设计系统颜色变量 */
+:root {
+  /* 主色调 */
+  --primary-color: #6366f1;
+  --secondary-color: #8b5cf6;
+  --accent-color: #06b6d4;
+  
+  /* 文本颜色 */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  
+  /* 背景颜色 */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  
+  /* 边框颜色 */
+  --border-color: #e5e7eb;
+  --border-light: #f3f4f6;
+  --border-dark: #d1d5db;
+  
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* 状态颜色 */
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  --info-color: #3b82f6;
+  
+  /* 圆角 */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  
+  /* 间距 */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* 字体大小 */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  
+  /* 过渡时间 */
+  --transition-fast: 0.15s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+}
+
+/* 深色模式 */
+.dark {
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  
+  --border-color: #374151;
+  --border-light: #4b5563;
+  --border-dark: #6b7280;
+}
+
+/* 兼容旧的Vue主题变量 */
+:root {
+  --vt-c-white: var(--bg-primary);
+  --vt-c-white-soft: var(--bg-secondary);
+  --vt-c-white-mute: var(--bg-tertiary);
+  --vt-c-black: var(--bg-primary);
+  --vt-c-black-soft: var(--bg-secondary);
+  --vt-c-black-mute: var(--bg-tertiary);
+  --vt-c-indigo: var(--primary-color);
+  --vt-c-divider-light-1: var(--border-dark);
+  --vt-c-divider-light-2: var(--border-color);
+  --vt-c-divider-dark-1: var(--border-light);
+  --vt-c-divider-dark-2: var(--border-color);
+  --vt-c-text-light-1: var(--text-primary);
+  --vt-c-text-light-2: var(--text-secondary);
+  --vt-c-text-dark-1: var(--text-primary);
+  --vt-c-text-dark-2: var(--text-secondary);
+  --color-background: var(--bg-primary);
+  --color-background-soft: var(--bg-secondary);
+  --color-background-mute: var(--bg-tertiary);
+  --color-border: var(--border-color);
+  --color-border-hover: var(--border-dark);
+  --color-heading: var(--text-primary);
+  --color-text: var(--text-primary);
+  --section-gap: 4rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
